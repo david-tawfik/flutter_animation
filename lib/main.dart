@@ -27,12 +27,21 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
   double _width = 100.0;
   double _height = 100.0;
   Color _color = Colors.black;
+  double _opacity = 1.0;
 
   void _animateContainer() {
     setState(() {
       _width = _width == 100.0 ? 200.0 : 100.0;
       _height = _height == 100.0 ? 200.0 : 100.0;
-      _color = _color == Colors.black ? const Color.fromARGB(255, 164, 150, 20) : Colors.black;
+      _color = _color == Colors.black
+          ? const Color.fromARGB(255, 164, 150, 20)
+          : Colors.black;
+    });
+  }
+
+  void _toggleOpacity() {
+    setState(() {
+      _opacity = _opacity == 1.0 ? 0.0 : 1.0;
     });
   }
 
@@ -45,13 +54,25 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
           width: _width,
           height: _height,
           color: _color,
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           curve: Curves.easeInOut,
         ),
-        SizedBox(height: 20),
         ElevatedButton(
           onPressed: _animateContainer,
-          child: Text('Animate Container'),
+          child: const Text('Animate Container'),
+        ),
+        AnimatedOpacity(
+          opacity: _opacity,
+          duration: const Duration(seconds: 1),
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.black,
+          ),
+        ),
+        ElevatedButton(
+          onPressed: _toggleOpacity,
+          child: const Text('Toggle Opacity'),
         ),
       ],
     );
