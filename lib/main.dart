@@ -32,6 +32,7 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<String> _items = [];
   bool _isTopLeft = true;
+  bool _isFirstWidget = true;
 
   void _animateContainer() {
     setState(() {
@@ -92,6 +93,12 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
   void _togglePosition() {
     setState(() {
       _isTopLeft = !_isTopLeft;
+    });
+  }
+
+  void _toggleWidget() {
+    setState(() {
+      _isFirstWidget = !_isFirstWidget;
     });
   }
 
@@ -188,6 +195,28 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
           ElevatedButton(
             onPressed: _togglePosition,
             child: const Text('Toggle Position'),
+          ),
+          const SizedBox(height: 40),
+          AnimatedSwitcher(
+            duration: const Duration(seconds: 1),
+            child: _isFirstWidget
+                ? Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.red,
+                    child: const Center(child: Text('First Widget')),
+                  )
+                : Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.blue,
+                    child: const Center(child: Text('Second Widget')),
+                  ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _toggleWidget,
+            child: const Text('Toggle Widget'),
           ),
         ],
       ),
