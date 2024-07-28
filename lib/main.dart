@@ -28,6 +28,7 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
   double _height = 100.0;
   Color _color = Colors.black;
   double _opacity = 1.0;
+  bool _isToggled = false;
 
   void _animateContainer() {
     setState(() {
@@ -42,6 +43,12 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
   void _toggleOpacity() {
     setState(() {
       _opacity = _opacity == 1.0 ? 0.0 : 1.0;
+    });
+  }
+
+  void _toggleTextStyle() {
+    setState(() {
+      _isToggled = !_isToggled;
     });
   }
 
@@ -73,6 +80,27 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
         ElevatedButton(
           onPressed: _toggleOpacity,
           child: const Text('Toggle Opacity'),
+        ),
+        AnimatedDefaultTextStyle(
+          style: _isToggled
+              ? const TextStyle(
+                  fontSize: 40,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.normal,
+                )
+              : const TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.italic,
+                ),
+          duration: const Duration(seconds: 1),
+          child: const Text('Animated Text Style'),
+        ),
+        ElevatedButton(
+          onPressed: _toggleTextStyle,
+          child: const Text('Toggle Text Style'),
         ),
       ],
     );
