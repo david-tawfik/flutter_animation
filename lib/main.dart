@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Animated Foo Examples')),
+        appBar: AppBar(title: const Text('Animated Foo Examples')),
         body: Center(
           child: AnimatedFooExample(),
         ),
@@ -31,6 +31,7 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
   bool _isToggled = false;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<String> _items = [];
+  bool _isTopLeft = true;
 
   void _animateContainer() {
     setState(() {
@@ -57,7 +58,8 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
   void _addItem() {
     setState(() {
       _items.insert(0, "Item ${_items.length + 1}");
-      _listKey.currentState?.insertItem(0, duration: const Duration(seconds: 1));
+      _listKey.currentState
+          ?.insertItem(0, duration: const Duration(seconds: 1));
     });
   }
 
@@ -85,6 +87,12 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
         ),
       ),
     );
+  }
+
+  void _togglePosition() {
+    setState(() {
+      _isTopLeft = !_isTopLeft;
+    });
   }
 
   @override
@@ -138,20 +146,49 @@ class _AnimatedFooExampleState extends State<AnimatedFooExample> {
             onPressed: _toggleTextStyle,
             child: const Text('Toggle Text Style'),
           ),
+          const SizedBox(height: 20),
           ElevatedButton(
-              onPressed: _addItem,
-              child: Text('Add Item'),
-            ),
+            onPressed: _addItem,
+            child: const Text('Add Item'),
+          ),
           SizedBox(
-              height: 200,
-              child: AnimatedList(
-                key: _listKey,
-                initialItemCount: _items.length,
-                itemBuilder: (context, index, animation) {
-                  return _buildItem(_items[index], animation);
-                },
-              ),
+            height: 200,
+            child: AnimatedList(
+              key: _listKey,
+              initialItemCount: _items.length,
+              itemBuilder: (context, index, animation) {
+                return _buildItem(_items[index], animation);
+              },
             ),
+          ),
+          const SizedBox(height: 40),
+          Stack(
+            children: [
+              Container(
+                width: 300,
+                height: 300,
+                color: Colors.grey.shade200,
+                child: Stack(
+                  children: [
+                    AnimatedPositioned(
+                      top: _isTopLeft ? 0 : 250,
+                      left: _isTopLeft ? 0 : 250,
+                      duration: const Duration(seconds: 1),
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: _togglePosition,
+            child: const Text('Toggle Position'),
+          ),
         ],
       ),
     );
